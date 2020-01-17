@@ -35,9 +35,11 @@ public class HomeController {
 		peliculas.add("Aliens");*/
 		
 		//Adicionar el atributo
+		System.out.println("LISTAAA PELICULASSS:" + peliculas);
 		model.addAttribute("peliculas", peliculas);
 		
 		return "home";
+		
 	}
 	
 	//Detalles
@@ -105,11 +107,22 @@ public class HomeController {
 			pelicula4.setImagen("starwars rise skywalker.jpg");
 			pelicula4.setEstatus("Inactiva");
 			
+			Pelicula pelicula5 = new Pelicula();
+			pelicula5.setId(5);
+			pelicula5.setTitulo("Gundala");
+			pelicula5.setDuracion(119);
+			pelicula5.setClasificacion("B");
+			pelicula5.setGenero("Accion/Drama");
+			pelicula5.setFechaEstreno(formatter.parse("29-08-2019"));
+			pelicula5.setImagen("gundala.jpg");
+			pelicula5.setEstatus("Activa");
+			
 			//Agregar los objetos Pelicula a la lista
 			lista.add(pelicula1);
 			lista.add(pelicula2);
 			lista.add(pelicula3);
 			lista.add(pelicula4);
+			lista.add(pelicula5);
 			
 			return lista;
 			
