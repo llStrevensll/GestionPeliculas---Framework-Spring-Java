@@ -3,17 +3,29 @@ package net.strevens.app.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Date;
 import java.util.LinkedList;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import net.strevens.app.model.Pelicula;
+import net.strevens.app.service.IPeliculasService;
+import net.strevens.app.util.Utileria;
 
 @Controller
 public class HomeController {
+	
+	@Autowired
+	private IPeliculasService servicePeliculas;
+	
+	//Usado para formato de la fecha
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 	
 	//Home
 	@RequestMapping(value="/home", method=RequestMethod.GET)
@@ -21,31 +33,65 @@ public class HomeController {
 		return "home";
 	}
 	
-	// / -> llevara por defecto a Principal
+	//Buscar - Post
+	@RequestMapping(value="/search", method=RequestMethod.POST)
+	public String buscar(@RequestParam("fecha") String fecha, Model model) {
+		
+		List<String> listaFechas = Utileria.getProximosDias(4); //Lista de Fechas
+		//Servicio peliculas
+		List<Pelicula> peliculas =  servicePeliculas.buscarTodas();				
+	
+		//Adicionar atributos al modelo
+		model.addAttribute("fechas", listaFechas);
+		model.addAttribute("fechaBusqueda", fecha);
+		model.addAttribute("peliculas", peliculas);
+		
+		
+		System.out.println("Buscando todas las peliculas en exhibicion para la fecha: " + fecha);
+		return "home";
+	}
+	
+	
+	// / -> Llevara por defecto a Principal
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public String mostrarPrincipal(Model model) {
 		
-		//Lista de peliculas 
-		List<Pelicula> peliculas =  getLista();
 		
+		List<String> listaFechas = Utileria.getProximosDias(4); //Lista de Fechas
+		List<Pelicula> peliculas =  servicePeliculas.buscarTodas(); 				
+		
+		System.out.println(listaFechas);
 		//Lista de tipo Pelicula -- LinkedList: Lista enlazada
 		//List<Pelicula> peliculas1 =  new LinkedList<>();
 		/*peliculas.add("Rapido y Furioso");
 		peliculas.add("El Aro 2");
 		peliculas.add("Aliens");*/
 		
-		//Adicionar el atributo
-		//System.out.println("LISTAAA PELICULASSS:" + peliculas);
+		//Adicionar atributos al modelo
+		model.addAttribute("fechas", listaFechas);
+		model.addAttribute("fechaBusqueda", dateFormat.format(new Date()));
 		model.addAttribute("peliculas", peliculas);
 		
 		return "home";
 		
 	}
 	
-	//Detalles
-	@RequestMapping(value="/detail")
-	public String mostrarDetalle(Model model) {//Recibe objeto de tipo model
+	//Mostrar Detalles de Pelicula
+	//@Pathvariable - usar variable en el url (url dinamica)
+	//@RequestMapping(value="/detail/{id}/{fecha}", method=RequestMethod.GET)
+	//public String mostrarDetalle(Model model, @PathVariable("id") int idPelicula, @PathVariable("fecha") String fecha) {
+	//@RequesParams recibe parametros por url
+	@RequestMapping(value= "/detail", method=RequestMethod.GET)
+	public String mostrarDetalle(Model model, @RequestParam("idMovie") int idPelicula, @RequestParam("fecha") String fecha) {
 		
+		System.out.println("Buscando horarios para la pelicula: " + idPelicula);
+		System.out.println("Para la fecha: " + fecha);
+		
+		model.addAttribute("pelicula", servicePeliculas.buscarPorId(idPelicula));
+		
+		// TODO - Buscar en la base de datos los horarios.
+		
+		/*
 		//Atributos
 		String tituloPelicula = "Rapidos y furiosos";
 		int duracion = 136;
@@ -54,81 +100,10 @@ public class HomeController {
 		//Adicionar atributos al modelo
 		model.addAttribute("titulo", tituloPelicula);
 		model.addAttribute("titulo", duracion);
-		model.addAttribute("precio", precioEntrada);
+		model.addAttribute("precio", precioEntrada);*/
 		
 		return "detalle";
 	}
 	
-	//Metodo para generar un lista de Objetos de Modelo (Pelicula)
-	private List<Pelicula> getLista(){
-		
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		List<Pelicula> lista = null;
-		
-		try {
-			// LinkedList: Lista enlazada
-			lista = new LinkedList<>();
-			
-			Pelicula pelicula1 = new Pelicula();
-			pelicula1.setId(1);
-			pelicula1.setTitulo("Joker");
-			pelicula1.setDuracion(120);
-			pelicula1.setClasificacion("C");
-			pelicula1.setGenero("Drama/Suspenso");
-			pelicula1.setFechaEstreno(formatter.parse("02-10-2019"));
-			pelicula1.setImagen("joker.jpg");
-			
-			Pelicula pelicula2 = new Pelicula();
-			pelicula2.setId(2);
-			pelicula2.setTitulo("Jumanji: siguiente nivel");
-			pelicula2.setDuracion(123);
-			pelicula2.setClasificacion("B");
-			pelicula2.setGenero("Fantasía/Acción");
-			pelicula2.setFechaEstreno(formatter.parse("04-12-2019"));
-			pelicula2.setImagen("jumanjisiguientenivel.jpg");//Nombre del archivo de imagen
-			
-			
-			Pelicula pelicula3 = new Pelicula();
-			pelicula3.setId(3);
-			pelicula3.setTitulo("Ip Man 4");
-			pelicula3.setDuracion(105);
-			pelicula3.setClasificacion("B");
-			pelicula3.setGenero("Drama/Acción");
-			pelicula3.setFechaEstreno(formatter.parse("25-12-2019"));
-			pelicula3.setImagen("ipman4.jpg");
-			
-			Pelicula pelicula4 = new Pelicula();
-			pelicula4.setId(4);
-			pelicula4.setTitulo("Star Wars: The rise of Skywalker");
-			pelicula4.setDuracion(142);
-			pelicula4.setClasificacion("B");
-			pelicula4.setGenero("Fantasia/Ciencia Ficcion");
-			pelicula4.setFechaEstreno(formatter.parse("16-12-2019"));
-			pelicula4.setImagen("starwars rise skywalker.jpg");
-			pelicula4.setEstatus("Inactiva");
-			
-			Pelicula pelicula5 = new Pelicula();
-			pelicula5.setId(5);
-			pelicula5.setTitulo("Gundala");
-			pelicula5.setDuracion(119);
-			pelicula5.setClasificacion("B");
-			pelicula5.setGenero("Accion/Drama");
-			pelicula5.setFechaEstreno(formatter.parse("29-08-2019"));
-			pelicula5.setImagen("gundala.jpg");
-			pelicula5.setEstatus("Activa");
-			
-			//Agregar los objetos Pelicula a la lista
-			lista.add(pelicula1);
-			lista.add(pelicula2);
-			lista.add(pelicula3);
-			lista.add(pelicula4);
-			lista.add(pelicula5);
-			
-			return lista;
-			
-		} catch(ParseException e) {
-			System.out.println("Error: " + e.getMessage());
-			return null;
-		}
-	}
+	
 }
