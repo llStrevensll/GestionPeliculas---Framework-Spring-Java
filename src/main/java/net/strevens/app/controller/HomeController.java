@@ -2,8 +2,8 @@ package net.strevens.app.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.LinkedList;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +35,7 @@ public class HomeController {
 		peliculas.add("Aliens");*/
 		
 		//Adicionar el atributo
-		System.out.println("LISTAAA PELICULASSS:" + peliculas);
+		//System.out.println("LISTAAA PELICULASSS:" + peliculas);
 		model.addAttribute("peliculas", peliculas);
 		
 		return "home";
