@@ -23,12 +23,9 @@ public class NoticiasController {
 	}
 	
 	@PostMapping(value="/save")
-	public String guardar(@RequestParam("titulo") String titulo, @RequestParam("estatus") String estatus, @RequestParam("detalle") String detalle) {
+	public String guardar(Noticia noticia) {//Data Binding - Sprinmvc creara la instancia automaticamente
 		
-		Noticia noticia = new Noticia();
-		noticia.setTitulo(titulo);
-		noticia.setEstatus(estatus);
-		noticia.setDetalle(detalle);
+		
 		
 		//Pendiente guardar el objeto noticia en la BD
 		
