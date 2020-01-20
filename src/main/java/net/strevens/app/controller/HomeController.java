@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import net.strevens.app.model.Pelicula;
+import net.strevens.app.service.IBannersService;
 import net.strevens.app.service.IPeliculasService;
 import net.strevens.app.util.Utileria;
 
@@ -23,6 +24,9 @@ public class HomeController {
 	
 	@Autowired
 	private IPeliculasService servicePeliculas;
+	
+	@Autowired
+	private IBannersService serviceBanners;
 	
 	//Usado para formato de la fecha
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -46,6 +50,7 @@ public class HomeController {
 		model.addAttribute("fechaBusqueda", fecha);
 		model.addAttribute("peliculas", peliculas);
 		
+		model.addAttribute("banners", serviceBanners.buscarTodos());
 		
 		System.out.println("Buscando todas las peliculas en exhibicion para la fecha: " + fecha);
 		return "home";
@@ -72,6 +77,7 @@ public class HomeController {
 		model.addAttribute("fechaBusqueda", dateFormat.format(new Date()));
 		model.addAttribute("peliculas", peliculas);
 		
+		model.addAttribute("banners", serviceBanners.buscarTodos());
 		return "home";
 		
 	}

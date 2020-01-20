@@ -1,8 +1,12 @@
 package net.strevens.app.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -15,10 +19,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import net.strevens.app.model.Pelicula;
 import net.strevens.app.service.IPeliculasService;
+import net.strevens.app.util.Utileria;
 
 @Controller
 @RequestMapping("/peliculas")
@@ -45,32 +52,36 @@ public class PeliculasController {
 	
 	//Guardar
 	@PostMapping("/save")
-	public String guardar(Pelicula pelicula, BindingResult result, RedirectAttributes attributes) {//Data Binding
+	public String guardar(Pelicula pelicula, BindingResult result, RedirectAttributes attributes,
+			@RequestParam("archivoImagen") MultipartFile multiPart, HttpServletRequest request) {//Data Binding
 		
-		/*if (result.hasErrors()) {
+		if (result.hasErrors()) {
 			System.out.println("Ecisten errores");
 			return "peliculas/formPelicula";
-		}*/
-		
-		//Ver errores
-		for (ObjectError error : result.getAllErrors()) {
-			System.out.println(error.getDefaultMessage());
 		}
 		
-		System.out.println("Recibiendo objeto Pelicula " + pelicula);
-		//Insertar 
-		System.out.println("Elementos en la lista antes de la insercion: " + servicePeliculas.buscarTodas().size());
+		if (!multiPart.isEmpty()) {//si multiPart no esta vacio
+			String nombreImagen = Utileria.guardarImagen(multiPart, request);
+			pelicula.setImagen(nombreImagen);
+		}
+		
+		//Ver errores
+		/*for (ObjectError error : result.getAllErrors()) {
+			System.out.println(error.getDefaultMessage());
+		}*/
+		
+	
 		
 		servicePeliculas.insertar(pelicula);
-		
-		System.out.println("Elementos en la lista despues de la insercion: " + servicePeliculas.buscarTodas().size());
+		//System.out.println("Elementos en la lista despues de la insercion: " + servicePeliculas.buscarTodas().size());
 		
 		//Adicionar para mostrar el msj en la vista
 		attributes.addFlashAttribute("mensaje", "El registro fue guardado");
-		
 		//return "peliculas/formPelicula";
 		return "redirect:/peliculas/index";
 	}
+	
+	
 	
 	//InitBinder - Permite crear metodos para condigurar databinding
 	@InitBinder
@@ -79,4 +90,6 @@ public class PeliculasController {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
 	}
+	
+	
 }
