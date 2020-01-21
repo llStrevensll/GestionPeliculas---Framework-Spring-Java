@@ -111,5 +111,27 @@ public class PeliculasServiceImpl implements IPeliculasService{
 		
 	}
 	
+	/*
+	 * Metodo que regresa una lista de los Generos de las peliculas
+	 */
+
+	@Override
+	public List<String> buscarGeneros() {
+		//Nota: Esta lista puede ser obtenida de una BD
+		List<String> generos = new LinkedList<>();
+		generos.add("Accion");
+		generos.add("Aventura");
+		generos.add("Clasicas");
+		generos.add("Comedia Romantica");
+		generos.add("Drama");
+		generos.add("Terror");
+		generos.add("Infantil");
+		generos.add("Accion y Aventura");
+		generos.add("Romatica");
+		generos.add("Ciencia Ficcion");
+		
+		return generos;
+	}
+	
 	
 }

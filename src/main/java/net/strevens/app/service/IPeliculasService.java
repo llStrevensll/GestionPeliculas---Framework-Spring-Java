@@ -11,5 +11,6 @@ public interface IPeliculasService {
 	//Declaración - Metodo para obtener Lista de tipo pelicula
 	List<Pelicula> buscarTodas();
 	Pelicula buscarPorId(int idPelicula);
+	List<String> buscarGeneros();
 
 }
