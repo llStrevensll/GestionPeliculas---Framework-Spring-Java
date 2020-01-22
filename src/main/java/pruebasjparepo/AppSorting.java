@@ -1,23 +1,33 @@
-package pruebasjpa;
+package pruebasjparepo;
+
+import java.util.List;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.data.domain.Sort;
 
 import net.strevens.app.model.Noticia;
 import net.strevens.app.repository.NoticiasRepository;
 
-public class AppFindAll {
+public class AppSorting {
+
 	public static void main(String[] args) {
 		
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("root-context.xml");
 		NoticiasRepository repo = context.getBean("noticiasRepository", NoticiasRepository.class);
 		
-		//Recuperar todos los registro [metodo findAll del repositorio]
-		Iterable<Noticia> it = repo.findAll();
-		for (Noticia n : it){
+		//Obtener todas las entidades ordenadas por un campo
+		//List<Noticia> lista = repo.findAll(Sort.by("titulo").descending());//Sort -> Ordenar
+		
+		//Obtener todas las entidades ordenadas por 2 campos
+		List<Noticia> lista = repo.findAll(Sort.by("fecha").descending().and(Sort.by("titulo").ascending()));
+		
+		for(Noticia n : lista) {
 			System.out.println(n);
 		}
+		
 		
 		context.close();
 
 	}
+
 }

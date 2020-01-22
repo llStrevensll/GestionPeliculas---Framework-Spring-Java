@@ -1,4 +1,4 @@
-package pruebasjpa;
+package pruebascrudrepo;
 
 import java.util.Optional;
 
