@@ -12,6 +12,7 @@
 	<context:component-scan base-package="net.strevens.app.service"></context:component-scan>
 	
 	<jpa:repositories base-package="net.strevens.app.repository" />
+	
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://localhost:3306/cineapp?useSSL=false" />
