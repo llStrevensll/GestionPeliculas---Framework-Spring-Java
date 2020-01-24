@@ -1,6 +1,7 @@
 package pruebasjparepo;
 
 import java.util.List;
+import java.util.TimeZone;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -13,7 +14,7 @@ public class AppFindAll {
 		
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("root-context.xml");
 		NoticiasRepository repo = context.getBean("noticiasRepository", NoticiasRepository.class);
-		
+		TimeZone.setDefault(TimeZone.getTimeZone("COT"));
 		List<Noticia> lista = repo.findAll();
 		
 		for (Noticia n : lista) {

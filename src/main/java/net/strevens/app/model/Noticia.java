@@ -22,7 +22,7 @@ public class Noticia {
 	
 	public Noticia() {
 		System.out.println("Constructor Noticia");
-		this.fecha = new Date();
+		//this.fecha = new Date();
 		this.estatus = "Activa";
 	}
 
@@ -51,6 +51,15 @@ public class Noticia {
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
+	
+	/*public String getFecha() {
+	return fecha;
+	}
+	
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
+	}*/
+	
 
 	public String getDetalle() {
 		return detalle;
