@@ -17,12 +17,17 @@
 		</multipart-config>
 		
 	</servlet>
+	
 	<servlet-mapping>
 		<servlet-name>springmvc</servlet-name>
 		<!-- <url-pattern>*.html</url-pattern>  -->
 		<url-pattern>/</url-pattern>
-		
 	</servlet-mapping>
+	
+	<error-page>
+	   <error-code>404</error-code>
+	   <location>/WEB-INF/views/error/404.jsp</location>
+	</error-page>
 	
 	<!-- needed for ContextLoaderListener -->
 	<context-param>

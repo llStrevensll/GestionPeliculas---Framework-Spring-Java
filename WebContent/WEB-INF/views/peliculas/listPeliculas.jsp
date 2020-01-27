@@ -12,7 +12,10 @@
     <title>Listado de Peliculas</title>
     
     <spring:url value="/resources" var="urlPublic"></spring:url>
-     <spring:url value="/" var="urlRoot"></spring:url>
+    <spring:url value="/" var="urlRoot"></spring:url>
+    <spring:url value="/peliculas/create" var="urlCreate"></spring:url>
+    <spring:url value="/peliculas/edit" var="urlEdit"></spring:url>
+    <spring:url value="/peliculas/delete" var="urlDelete"></spring:url>
     
     <link href="${urlPublic}/bootstrap/css/bootstrap.min.css" rel="stylesheet">   
     <link href="${urlPublic}/bootstrap/css/theme.css" rel="stylesheet">
@@ -45,7 +48,7 @@
                 <th>Estatus</th>
                 <th>Opciones</th>
             </tr>
-            <c:forEach var="pelicula" items="${peliculas }">
+            <c:forEach var="pelicula" items="${peliculas.content }">
             	<tr>
 	                <td>${pelicula.titulo }</td>
 	                <td>${pelicula.genero }</td>
@@ -64,17 +67,20 @@
 	                	
 	                </td>
 	                <td>
-	                    <a href="#" class="btn btn-success btn-sm" role="button" title="Edit" ><span class="glyphicon glyphicon-pencil"></span></a>
-	                    <a href="#" class="btn btn-danger btn-sm" role="button" title="Eliminar" ><span class="glyphicon glyphicon-trash"></span></a>
+	                    <a href="${urlEdit}/${pelicula.id}" class="btn btn-success btn-sm" role="button" title="Edit" ><span class="glyphicon glyphicon-pencil"></span></a>
+	                    <a href="${urlDelete}/${pelicula.id}" onclick='return confirm("¿Estas seguro?")' class="btn btn-danger btn-sm" role="button" title="Eliminar" ><span class="glyphicon glyphicon-trash"></span></a>
 	                </td>
             	</tr>
             </c:forEach>
-            
-            
-            
         </table>
       </div>
-          
+       <nav aria-label=""> 
+        	<ul class="pager">
+        		<li><a href="${urlPeliculas}/indexPaginate?page=${peliculas.number - 1} ">Anterior</a></li>
+        		<li><a href="${urlPeliculas}/indexPaginate?page=${peliculas.number + 1} ">Siguiente</a></li>
+        	</ul>
+        </nav>
+  
       <hr class="featurette-divider">
 
       <!-- FOOTER -->
