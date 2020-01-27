@@ -2,13 +2,30 @@ package net.strevens.app.model;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+@Entity
+@Table(name="Horarios")
 public class Horario {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private Date fecha;
 	private String hora;
 	private String sala;
 	private double precio;
+	
+	//@Transient
+	@ManyToOne
+	@JoinColumn(name="idPelicula")
 	private Pelicula pelicula;
 
 	public Horario() { }
