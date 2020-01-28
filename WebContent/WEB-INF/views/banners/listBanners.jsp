@@ -11,7 +11,7 @@
     <meta name="author" content="">
     <title>Listado de imagenes del banner</title>
     <spring:url value="/resources" var="urlPublic" />
-	 <spring:url value="/banners/create" var="urlCreate" />
+	 <spring:url value="/banners" var="urlBanners" />
     <link href="${urlPublic}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${urlPublic}/bootstrap/css/theme.css" rel="stylesheet">
     
@@ -23,13 +23,13 @@
 
     <div class="container theme-showcase" role="main">
 
-      <h3>Listado de imagenes del Banner</h3>
+      <h3>Listado de imagenes del banner (carrusel) </h3>
       
-	  <c:if test="${mensaje!=null }">      	
-      	<div class='alert alert-success' role="alert">${mensaje}</div>      	
+      <c:if test="${msg !=null }">        
+        	<div class='alert alert-success' role='alert'>${msg}</div>
       </c:if>
-	  
-      <a href="${urlCreate}" class="btn btn-success" role="button" title="Nuevo Banner" >Nuevo</a><br><br>
+      
+      <a href="${urlBanners}/create" class="btn btn-success" role="button" title="Nuevo Banner" >Nuevo</a><br><br>
 
       <div class="table-responsive">
         <table class="table table-hover table-striped table-bordered">
@@ -58,8 +58,8 @@
 						 </c:choose>	                
 	             
 	                <td>
-	                    <a href="#" class="btn btn-success btn-sm" role="button" title="Edit" ><span class="glyphicon glyphicon-pencil"></span></a>
-	                    <a href="#" class="btn btn-danger btn-sm" role="button" title="Eliminar" ><span class="glyphicon glyphicon-trash"></span></a>
+	                    <a href="${urlBanners}/edit/${banner.id}" class="btn btn-success btn-sm" role="button" title="Edit" ><span class="glyphicon glyphicon-pencil"></span></a>
+	                    <a href="${urlBanners}/delete/${banner.id}" onclick='return confirm("¿Estas seguro?")' class="btn btn-danger btn-sm" role="button" title="Eliminar" ><span class="glyphicon glyphicon-trash"></span></a>
 	                </td>
             	</tr>
             </c:forEach>
